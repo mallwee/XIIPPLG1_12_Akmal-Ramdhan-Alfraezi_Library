@@ -20,22 +20,27 @@ module.exports = (sequelize, DataTypes) => {
         as: "loans",
         onDelete: "CASCADE",
       });
+
+      User.hasMany(models.Review, {
+        foreignKey: "user_id",
+        as: 'reviews',
+        onDelete: 'CASCADE'
+      });
     }
   }
 
   User.init(
     {
       username: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
-        unique: true,
         validate: {
           notNull: true,
           notEmpty: true,
         },
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
         validate: {
           notNull: true,
@@ -43,27 +48,26 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
         validate: {
           notNull: true,
+          notEmpty: true,
         },
       },
       email: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
         unique: true,
         validate: {
           notNull: true,
+          notEmpty: true,
           isEmail: true,
         },
       },
       phone: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: true,
-        validate: {
-          isNumeric: true,
-        },
       },
     },
     {
@@ -71,9 +75,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
       tableName: "users",
       underscored: true,
-      createdAt: false,
-      updatedAt: false,
-      deletedAt: false,
+      timestamps: false,
     }
   );
 

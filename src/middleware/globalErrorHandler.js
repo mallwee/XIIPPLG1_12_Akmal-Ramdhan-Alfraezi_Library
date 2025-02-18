@@ -1,6 +1,6 @@
 const { ValidationError } = require("sequelize");
 
-const errorHandler = (err, req, res, next) => {
+module.exports = (err, req, res, next) => {
   console.error(err);
 
   let statusCode = err.statusCode || 500;
@@ -11,7 +11,5 @@ const errorHandler = (err, req, res, next) => {
     message = err.errors.map((e) => e.message);
   }
 
-  res.status(statusCode).json({ success: false, message });
+  res.status(statusCode).json({ message });
 };
-
-module.exports = errorHandler;

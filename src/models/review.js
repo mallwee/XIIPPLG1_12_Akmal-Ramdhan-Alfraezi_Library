@@ -2,17 +2,23 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
+  /**
+   * Helper method for defining associations.
+   * This method is not a part of Sequelize lifecycle.
+   * The `models/index` file will call this method automatically.
+  */
   class Review extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       Review.belongsTo(models.Book, {
         foreignKey: "book_id",
         as: "book",
         onDelete: "CASCADE",
+      });
+
+      Review.belongsTo(models.User, {
+        foreignKey: "user_id",
+        as: "user",
+        onDelete: "CASCADE"
       });
     }
   }
@@ -24,21 +30,25 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: true,
-          isInt: true,
-          min: { args: [1] },
-          max: { args: [5] },
+          min: 1,
+          max: 5,
         },
       },
-      comment: { type: DataTypes.TEXT, allowNull: true },
+      comment: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       sequelize,
       modelName: "Review",
       tableName: "reviews",
       underscored: true,
-      createdAt: true,
-      updatedAt: false,
-      deletedAt: false,
+      timestamps: false,
     }
   );
 

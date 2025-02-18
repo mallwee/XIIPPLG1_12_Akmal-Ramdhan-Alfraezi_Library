@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   Book.init(
     {
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
         validate: {
           notNull: true,
@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       writer: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
         validate: {
           notNull: true,
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       publisher: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
         validate: {
           notNull: true,
@@ -67,9 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: true,
           isInt: true,
-          max: {
-            args: [new Date().getFullYear()],
-          },
+          max: new Date().getFullYear(),
         },
       },
       user_id: {
@@ -79,9 +77,6 @@ module.exports = (sequelize, DataTypes) => {
           model: "users",
           key: "id",
         },
-        validate: {
-          isInt: true,
-        },
       },
       category_id: {
         type: DataTypes.INTEGER,
@@ -90,10 +85,6 @@ module.exports = (sequelize, DataTypes) => {
           model: "categories",
           key: "id",
         },
-        validate: {
-          isInt: true,
-          notNull: true,
-        },
       },
     },
     {
@@ -101,9 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Book",
       tableName: "books",
       underscored: true,
-      createdAt: false,
-      updatedAt: false,
-      deletedAt: false,
+      timestamps: false,
     }
   );
 

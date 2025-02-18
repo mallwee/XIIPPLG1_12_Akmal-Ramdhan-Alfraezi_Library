@@ -1,13 +1,18 @@
 const express = require("express");
-const router = express.Router();
-const BookController = require("../controllers/book");
-const validateRequest = require("../middleware/validateRequest");
-const bookSchema = require("../validations/book");
+const bookController = require("../controllers/book");
+const authenticate = require('../middleware/auth');
+const bookValidation = require ('../middleware/validations/book');
+const errorValidationHandler = require('../middleware/errorValidationHandler');
 
-router.get("/", BookController.index);
-router.get("/:id", BookController.show);
-router.post("/", validateRequest(bookSchema), BookController.store);
-router.put("/:id", validateRequest(bookSchema), BookController.update);
-router.delete("/:id", BookController.destroy);
+const router = express.Router();
+
+router.route("/")
+  .get(authenticate, bookController.index)
+  .post(authenticate, bookValidation, errorValidationHandler, bookController.store);
+
+router.route("/:id")
+  .get(authenticate, bookController.show)
+  .put(authenticate, bookValidation, errorValidationHandler, bookController.update)
+  .delete(authenticate, bookController.destroy);
 
 module.exports = router;
